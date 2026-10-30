@@ -1,0 +1,22 @@
+
+services:
+  db:
+    image: postgres:17
+    container_name: shoptrack-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: shoptrack
+      POSTGRES_USER: shoptrack_user
+      POSTGRES_PASSWORD: shoptrack_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - shoptrack_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shoptrack_user -d shoptrack"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  shoptrack_data:
